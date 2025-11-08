@@ -7,32 +7,38 @@
         </router-link>
         <span class="location-tag">Indore</span>
       </div>
-      <div class="right-section">
+      <div class="mobile-overlay" :class="{ 'active': isMobileMenuOpen }" @click="closeMobileMenu"></div>
+      <div class="right-section" :class="{ 'mobile-open': isMobileMenuOpen }">
         <ul class="nav-links">
           <li>
-            <router-link to="/" class="nav-link" active-class="active">Home</router-link>
+            <router-link to="/" class="nav-link" active-class="active" @click="closeMobileMenu">Home</router-link>
           </li>
           <li>
-            <router-link to="/agenda" class="nav-link" active-class="active">Agenda</router-link>
+            <router-link to="/agenda" class="nav-link" active-class="active" @click="closeMobileMenu">Agenda</router-link>
           </li>
           <li>
-            <router-link to="/speakers" class="nav-link" active-class="active">Speakers</router-link>
+            <router-link to="/speakers" class="nav-link" active-class="active" @click="closeMobileMenu">Speakers</router-link>
           </li>
           <li>
-            <router-link to="/badge" class="nav-link" active-class="active">Badge</router-link>
+            <router-link to="/badge" class="nav-link" active-class="active" @click="closeMobileMenu">Badge</router-link>
           </li>
           <li>
-            <router-link to="/sponsors" class="nav-link" active-class="active">Sponsors</router-link>
+            <router-link to="/sponsors" class="nav-link" active-class="active" @click="closeMobileMenu">Sponsors</router-link>
           </li>
           <li>
-            <router-link to="/team" class="nav-link" active-class="active">Team</router-link>
+            <router-link to="/team" class="nav-link" active-class="active" @click="closeMobileMenu">Team</router-link>
           </li>
           <li>
-            <router-link to="/faq" class="nav-link" active-class="active">FAQ</router-link>
+            <router-link to="/faq" class="nav-link" active-class="active" @click="closeMobileMenu">FAQ</router-link>
           </li>
         </ul>
         <button class="register-btn" @click="handleRegister">Register Now</button>
-      </div>    
+      </div>
+      <button class="mobile-menu-toggle" @click="toggleMobileMenu" aria-label="Toggle menu">
+        <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
+        <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
+        <span class="hamburger-line" :class="{ 'active': isMobileMenuOpen }"></span>
+      </button>
     </nav>
   </header>
 </template>
@@ -40,9 +46,20 @@
 <script>
 export default {
   name: 'HeaderComponent',
+  data() {
+    return {
+      isMobileMenuOpen: false
+    }
+  },
   methods: {
     handleRegister() {
       window.open('https://konfhub.com/pre-devfest-indore', '_blank')
+    },
+    toggleMobileMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen
+    },
+    closeMobileMenu() {
+      this.isMobileMenuOpen = false
     }
   }
 }
@@ -54,6 +71,10 @@ export default {
   padding: 0.75rem 2rem;
   display: flex;
   justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .nav {
@@ -173,6 +194,54 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background-color: #333333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-line.active:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-line.active:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.active:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.active {
+  opacity: 1;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .nav-links {
@@ -199,43 +268,100 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
   .nav {
-    width: 95%;
-    flex-wrap: wrap;
-    padding: 1rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    position: relative;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .mobile-overlay {
+    display: block;
   }
   
   .right-section {
-    order: 2;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background-color: #F0F0F0;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
-    margin-top: 1rem;
+    padding: 5rem 1.5rem 2rem;
+    gap: 1.5rem;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  .right-section.mobile-open {
+    right: 0;
   }
   
   .nav-links {
     width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .nav-link {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    display: block;
   }
   
   .register-btn {
     width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
   }
   
   .logo-image {
-    height: 26px;
+    height: 28px;
   }
   
   .location-tag {
     font-size: 0.7rem;
     padding: 0.15rem 0.5rem;
   }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem 0.75rem;
+  }
   
-  .register-btn {
-    padding: 0.4rem 0.9rem;
-    font-size: 0.75rem;
+  .nav {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .logo-image {
+    height: 24px;
+  }
+  
+  .location-tag {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+  }
+  
+  .right-section {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .right-section.mobile-open {
+    right: 0;
   }
 }
 </style>

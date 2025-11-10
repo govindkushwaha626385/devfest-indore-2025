@@ -3,6 +3,7 @@
     <HeroSection />
     <StatisticsSection />
     <WhatToExpectSection />
+    <LastYearSection />
   </div>
 </template>
 
@@ -10,13 +11,15 @@
 import HeroSection from '@/components/homePage/HeroSection.vue'
 import StatisticsSection from '@/components/homePage/StatisticsSection.vue'
 import WhatToExpectSection from '@/components/homePage/WhatToExpectSection.vue'
+import LastYearSection from '@/components/homePage/LastYearSection.vue'
 
 export default {
   name: 'HomeView',
   components: {
     HeroSection,
     StatisticsSection,
-    WhatToExpectSection
+    WhatToExpectSection,
+    LastYearSection
   }
 }
 </script>

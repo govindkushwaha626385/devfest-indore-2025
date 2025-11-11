@@ -369,5 +369,15 @@ onMounted(() => {
   .title {
     font-size: var(--text-3xl);
   }
+
+  /* ✅ Social icons centered only in mobile */
+  .modal-social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    margin-top: 16px;
+  }
 }
 </style>
